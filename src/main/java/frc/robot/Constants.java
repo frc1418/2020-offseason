@@ -1,4 +1,4 @@
-/*----------------------------------------------------------------------------*/
+    /*----------------------------------------------------------------------------*/
 /* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
 /* Open Source Software - may be modified and shared by FRC teams. The code   */
 /* must be accompanied by the FIRST BSD license file in the root directory of */
@@ -16,4 +16,18 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    // Drivetrain devices
+    public static final int FRONT_LEFT_MOTOR = 0;
+    public static final int FRONT_RIGHT_MOTOR = 1;
+    public static final int REAR_LEFT_MOTOR = 2;
+    public static final int REAR_RIGHT_MOTOR = 3;
+
+    // Shooter devices
+    public static final int SHOOTER_MOTOR_1 = 4;
+    public static final int SHOOTER_MOTOR_2 = 5;
+
+    // Intake devices
+    public static final int UPPER_INTAKE_MOTOR = 6;
+    public static final int BOTTOM_INTAKE_MOTOR = 7;
 }
+
