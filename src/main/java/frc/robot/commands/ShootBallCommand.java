@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
-public class ShootBallCommand {
+import edu.wpi.first.wpilibj2.command.CommandBase;
+
+public class ShootBallCommand extends CommandBase {
     
 }
