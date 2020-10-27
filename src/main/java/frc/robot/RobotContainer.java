@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import java.util.logging.Logger;
+
+import edu.wpi.first.networktables.LogMessage;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
@@ -27,6 +30,7 @@ import frc.robot.subsystems.ShooterSubsystem;
  */
 public class RobotContainer {
     // The robot's subsystems and commands are defined here...
+    private final Logger logger = Logger.getLogger("Robot");
     private final Limelight limelight = new Limelight();
     private final DriveSubsystem driveSubsystem = new DriveSubsystem();
     private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
@@ -60,7 +64,10 @@ public class RobotContainer {
 
         driveSubsystem.setDefaultCommand(new RunCommand(() -> driveSubsystem.drive(speed, rotation), driveSubsystem));
         shooterSubsystem.setDefaultCommand(new RunCommand(() -> shooterSubsystem.shootyShooty(throttle), shooterSubsystem));
-        succButton.whileHeld(new RunCommand(() -> intakeSubsystem.succySuccy(-1.0)));
+        succButton.whileHeld(new RunCommand(() -> {
+            logger.info("Button held command running");
+            // intakeSubsystem.succySuccy(-1.0);
+        }, intakeSubsystem));
     }
 
     /**
