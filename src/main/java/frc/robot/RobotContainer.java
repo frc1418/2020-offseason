@@ -9,13 +9,18 @@ package frc.robot;
 
 import java.util.logging.Logger;
 
+import com.revrobotics.ColorSensorV3;
+
 import edu.wpi.first.networktables.LogMessage;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.common.ColorSensor;
 import frc.robot.common.Limelight;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
@@ -51,11 +56,11 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
-        Joystick altJoystick = new Joystick(3);
+        Joystick altJoystick = new Joystick(2);
 
         JoystickButton autoButton = new JoystickButton(altJoystick, 5);
 
-        JoystickButton succButton = new JoystickButton(altJoystick, 1);
+        JoystickButton triggerButton = new JoystickButton(altJoystick, 1);
         
         
         double speed = altJoystick.getY();
@@ -64,10 +69,7 @@ public class RobotContainer {
 
         driveSubsystem.setDefaultCommand(new RunCommand(() -> driveSubsystem.drive(speed, rotation), driveSubsystem));
         shooterSubsystem.setDefaultCommand(new RunCommand(() -> shooterSubsystem.shootyShooty(throttle), shooterSubsystem));
-        succButton.whileHeld(new RunCommand(() -> {
-            logger.info("Button held command running");
-            // intakeSubsystem.succySuccy(-1.0);
-        }, intakeSubsystem));
+
     }
 
     /**
