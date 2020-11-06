@@ -126,7 +126,7 @@ public class Limelight extends SubsystemBase {
     }
 
     private Pose2d getPose() {
-        if (getPipeline() != PIPELINE_GET_POS) {
+        if (getPipeline() != Constants.PIPELINE_GET_POS) {
             throw new IllegalArgumentException("The limelight must be set to the right pipeline to get run getPose()");
         }
 
@@ -134,18 +134,19 @@ public class Limelight extends SubsystemBase {
             return null;
         }
 
-        double rot = Rotation2d.fromDegrees((poseData[4] + 180) % 360);
+        double[] data = poseData.getDoubleArray(new double[6]);
+        Rotation2d rot = Rotation2d.fromDegrees((data[4] + 180) % 360);
         //TODO: figure out what "15" is. Maybe distance of center of robot to limelight?
-        double x = 15 * math.cos(rot.degrees()) - poseData[2];
-        double y = 15 * math.cos(90 - rot.degrees()) + poseData[0];
+        double x = 15 * Math.cos(rot.getDegrees()) - data[2];
+        double y = 15 * Math.cos(90 - rot.getDegrees()) + data[0];
         // Change unit from inches to meters
-        return Pose2d(x / 39.37, y / 39.37, rot);
+        return new Pose2d(x / 39.37, y / 39.37, rot);
     }
 
     private Pose2d computeAveragePose(Pose2d averagePose, Pose2d newPose) {
-        averageX = ((9 * averagePose.getTranslation().getX()) + newPose.getTranslation().getX()) / 10;
-        averageY = ((9 * averagePose.getTranslation().getY()) + newPose.getTranslation().getY()) / 10;
-        averageRot = ((9 * averagePose.getRotation().getRadians()) + newPose.getRotation().getRadians()) / 10;
+        double averageX = ((9 * averagePose.getTranslation().getX()) + newPose.getTranslation().getX()) / 10;
+        double averageY = ((9 * averagePose.getTranslation().getY()) + newPose.getTranslation().getY()) / 10;
+        double averageRot = ((9 * averagePose.getRotation().getRadians()) + newPose.getRotation().getRadians()) / 10;
         return new Pose2d(averageX, averageY, new Rotation2d(averageRot));
     }
 
