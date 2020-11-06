@@ -3,7 +3,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
-import  edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 
 public class Limelight extends SubsystemBase {
     private NetworkTableInstance ntInstance = NetworkTableInstance.getDefault();
@@ -62,15 +64,15 @@ public class Limelight extends SubsystemBase {
     }
 
     public double getYaw() {
-        return this.yaw.getDouble());
+        return this.yaw.getDouble(0);
     }
 
     public double getPitch() {
-        return pitch.getDouble();
+        return pitch.getDouble(0);
     }
  
     public int getLightMode() {
-        return lightMode.getNumber().intValue();
+        return lightMode.getNumber(0).intValue();
     }
 
     public void setLightMode(int lightMode) {
@@ -78,15 +80,15 @@ public class Limelight extends SubsystemBase {
     }
     
     public boolean getValidTarget() {
-        return validTarget.getNumber() == 1;
+        return validTarget.getNumber(0).intValue() == 1;
     }
 
     public double getSkew() {
-        return skew.getDouble();
+        return skew.getDouble(0);
     }
 
     public int getCameraMode() {
-        return cameraMode.getNumber().intValue();
+        return cameraMode.getNumber(0).intValue();
     }
 
     public void setCameraMode(int cameraMode) {
@@ -98,7 +100,7 @@ public class Limelight extends SubsystemBase {
     }
 
     public int getPipeline() {
-        return pipeline.getNumber().intValue();
+        return pipeline.getNumber(0).intValue();
     }
         
     /**
