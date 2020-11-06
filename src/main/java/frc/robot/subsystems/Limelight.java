@@ -3,8 +3,9 @@ package frc.robot.subsystems;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import  edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Limelight {
+public class Limelight extends SubsystemBase {
     private NetworkTableInstance ntInstance = NetworkTableInstance.getDefault();
     private NetworkTable table = ntInstance.getTable("/limelight");
 
@@ -36,9 +37,7 @@ public class Limelight {
     // UNIT = degrees;
     private static final double CAMERA_ANGLE = 13.5;
 
-    private double averageX = 0;
-    private double averageY = 0;
-    private double averageRot = 0;
+    private Pose2d averagePose;
 
     /**
      * Constructor
@@ -53,6 +52,13 @@ public class Limelight {
         pipeline.setDefaultNumber(0);
         targetState.setDefaultNumber(0);
         poseData.setDefaultDoubleArray(new double[6]);
+    }
+
+    @Override
+    public void periodic() {
+        Pose2d currentPose = getPose();
+        if (currentPose != null)
+            averagePose = computeAveragePose(averagePose, currentPose);
     }
 
     public double getYaw() {
@@ -117,7 +123,7 @@ public class Limelight {
         return (TARGET_ELEVATION - CAMERA_ELEVATION) / Math.sin(Math.toRadians(CAMERA_ANGLE + getPitch()));
     }
 
-    public Pose2d getPose() {
+    private Pose2d getPose() {
         if (getPipeline() != PIPELINE_GET_POS) {
             throw new IllegalArgumentException("The limelight must be set to the right pipeline to get run getPose()");
         }
@@ -132,22 +138,16 @@ public class Limelight {
         double y = 15 * math.cos(90 - rot.degrees()) + poseData[0];
         // Change unit from inches to meters
         return Pose2d(x / 39.37, y / 39.37, rot);
-
     }
 
-    private void averagePose() {
-        Pose2d pose = getPose();
-
-        if (pose == null) {
-            return;
-        }
-
-        averageX = ((9 * averageX) + pose.getTranslation().getX()) / 10;
-        averageY = ((9 * averageY) + pose.getTranslation().getY()) / 10;
-        averageRot = ((9 * averageRot) + pose.getRotation().getDegrees()) / 10;
+    private Pose2d computeAveragePose(Pose2d averagePose, Pose2d newPose) {
+        averageX = ((9 * averagePose.getTranslation().getX()) + newPose.getTranslation().getX()) / 10;
+        averageY = ((9 * averagePose.getTranslation().getY()) + newPose.getTranslation().getY()) / 10;
+        averageRot = ((9 * averagePose.getRotation().getRadians()) + newPose.getRotation().getRadians()) / 10;
+        return new Pose2d(averageX, averageY, new Rotation2d(averageRot));
     }
 
-    public Pose2d getAveragedPose(){
-        return Pose2d(averageX, averageY, Rotation2d.fromDegrees(averageRot));
+    public Pose2d getAveragePose() {
+        return averagePose;
     }
 }
