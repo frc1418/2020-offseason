@@ -33,8 +33,7 @@ public class ShooterSubsystem extends SubsystemBase {
      * @param shooterSpeed Velocity of shooter motors in RPM
      */
     public void shooter(double shooterSpeed) {
-        // shooterController.setReference(shooterSpeed, ControlType.kVelocity);
-        shooterMotor1.set(shooterSpeed);
+        shooterController.setReference(shooterSpeed, ControlType.kVelocity);
     }
 
 }

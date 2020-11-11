@@ -27,10 +27,9 @@ public final class Constants {
     public static final int SHOOTER_MOTOR_2 = 12;
 
     // Intake devices
-    public static final int UPPER_INTAKE_MOTOR = 1;
-    public static final int BOTTOM_INTAKE_MOTOR = 40;
-    public static final int INTAKE_SWITCH = 2;
-    public static final int INTAKE_SOLENOID_FWD = 2;
-    public static final int INTAKE_SOLENOID_REV = 1;
+    public static final int UPPER_INTAKE_MOTOR = 6;
+    public static final int BOTTOM_INTAKE_MOTOR = 7;
+    public static final int INTAKE_SWITCH = 8;
+    public static final int DOUBLE_SOLENOID = 9;
 }
 

@@ -84,12 +84,9 @@ public class RobotContainer {
             .whenPressed(new InstantCommand(() -> shooterSubsystem.activatePiston(), shooterSubsystem))
             .whenInactive(new InstantCommand(() -> shooterSubsystem.lowerPiston(), shooterSubsystem));
 
-        btnIntakeOut
-            .whenHeld(new InstantCommand(() -> intakeSubsystem.spin(0.5), intakeSubsystem))
-            .whenInactive(new InstantCommand(() -> intakeSubsystem.spin(0), intakeSubsystem), true);
-        btnIntakeIn
-            .whenHeld(new InstantCommand(() -> intakeSubsystem.spin(-0.5), intakeSubsystem))
-            .whenInactive(new InstantCommand(() -> intakeSubsystem.spin(0), intakeSubsystem), true);
+        driveSubsystem.setDefaultCommand(new RunCommand(() -> driveSubsystem.drive(speed, rotation), driveSubsystem));
+        shooterSubsystem.setDefaultCommand(new RunCommand(() -> shooterSubsystem.shooter(throttle), shooterSubsystem));
+        succButton.whenHeld(new RunCommand(() -> intakeSubsystem.spin(-1.0)));
     }
 
     /**
@@ -99,7 +96,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        Command charge = new ChargeAutoCommand(driveSubsystem, 0.2).withTimeout(1);
+        ParallelRaceGroup charge = new ChargeAutoCommand(driveSubsystem, 0.2).withTimeout(1);
         return charge;
     }
 }
