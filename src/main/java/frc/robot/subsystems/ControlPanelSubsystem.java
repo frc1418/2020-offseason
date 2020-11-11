@@ -1,6 +1,10 @@
 package frc.robot.subsystems;
 
+// import java.util.HashMap;
 import java.util.List;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatch;
@@ -8,6 +12,7 @@ import com.revrobotics.ColorMatch;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C.Port;
@@ -15,23 +20,25 @@ import edu.wpi.first.wpilibj.util.Color;
 
 public class ControlPanelSubsystem extends SubsystemBase {
 
-    public VictorSPX cpMotor;
-    public DoubleSolenoid cpSolenoid;
-    public ColorSensorV3 colorSensor;
-    public DriverStation ds;
-    public ColorMatch colorMatcher;
+    private VictorSPX cpMotor;
+    private DoubleSolenoid cpSolenoid;
+    private ColorSensorV3 colorSensor;
+    private DriverStation ds;
+    private ColorMatch colorMatcher;
 
-    Color turnToColor = null;
-    public Color detectedColor = null;
-    public Color fmsColor = null;
-    Color lastColor = null;
+    private Color turnToColor = null;
+    private Color detectedColor = null;
+    private Color fmsColor = null;
+    private Color lastColor = null;
 
-    List<String> colorNames;
-    public List<Color> colors;
+    private List<String> colorNames;
+    private List<Color> _colors;
+    
 
-    //TODO: Both of these were "will_reset_to" variables in python, but I couldn't find a java alternative
-    public int speed = 0;
-    public DoubleSolenoid.Value solenoidState = DoubleSolenoid.Value.kReverse;
+    //private LinkedHashMap<String, Color> colors;
+
+    private int speed = 0;
+    private Value solenoidState = Value.kReverse;
 
     public ControlPanelSubsystem(){
         cpMotor = new VictorSPX(2);
@@ -40,15 +47,26 @@ public class ControlPanelSubsystem extends SubsystemBase {
         ds = DriverStation.getInstance();
         colorMatcher = new ColorMatch();
 
+        // colors = new LinkedHashMap<String, Color>();
+        // colors.put("B", new Color(0.175, 0.469, 0.356));
+        // colors.put("G", new Color(0.188, 0.503, 0.310));
+        // colors.put("R", new Color(0.325, 0.453, 0.221));
+        // colors.put("Y", new Color(0.269, 0.550, 0.181));
+
         colorNames.add("B");
         colorNames.add("G");
         colorNames.add("R");
         colorNames.add("Y");
 
-        colors.add(new Color(0.175, 0.469, 0.356));
-        colors.add(new Color(0.188, 0.503, 0.310));
-        colors.add(new Color(0.325, 0.453, 0.221));
-        colors.add(new Color(0.269, 0.550, 0.181));
+        _colors.add(new Color(0.175, 0.469, 0.356));
+        _colors.add(new Color(0.188, 0.503, 0.310));
+        _colors.add(new Color(0.325, 0.453, 0.221));
+        _colors.add(new Color(0.269, 0.550, 0.181));
+
+        for(Color color : _colors){
+            colorMatcher.addColorMatch(color);
+        }
+        colorMatcher.addColorMatch(Color.kBlack);
     }
 
     public void spin(int speed){
@@ -56,24 +74,65 @@ public class ControlPanelSubsystem extends SubsystemBase {
     }
 
     public void setSolenoid(boolean extend){
-        if (extend)
-            solenoidState = DoubleSolenoid.Value.kForward;
-        else
-        solenoidState = DoubleSolenoid.Value.kReverse;
+        if (extend){
+            solenoidState = Value.kForward;
+        }
+            
+        else{
+            solenoidState = Value.kReverse;
+        }
     }
 
-    public void getFMSColor(){
-        int fmsColorIndex = colorNames.indexOf(ds.getGameSpecificMessage());
-        fmsColor = colors.get(fmsColorIndex);
+    public Color getFMSColor(){
+        int fmsColorIndex =  _colors.indexOf(ds.getGameSpecificMessage());
+        fmsColor = _colors.get(fmsColorIndex);
 
-        turnToColor = colors.get((fmsColorIndex + 2) % colors.size());
+        turnToColor = _colors.get((fmsColorIndex + 2) % _colors.size());
+
+        return fmsColor;
     }
 
-    public static double calculateDistance(Color color1, Color color2){
-        double redDiff = color1.red - color2.red;
-        double greenDiff = color1.green - color2.green;
-        double blueDiff = color1.blue - color2.blue;
+    public DriverStation getDS() {
+        return ds;
+    }
 
-        return Math.sqrt((redDiff * redDiff + greenDiff * greenDiff + blueDiff * blueDiff) / 2);
+    public ColorSensorV3 getColorSensor() {
+        return colorSensor;
+    }
+
+    public ColorMatch getColorMatcher() {
+        return colorMatcher;
+    }
+
+    public Color getDetectedColor(){
+        return detectedColor;
+    }
+
+    public void setDetectedColor(Color detectedColor) {
+        this.detectedColor = detectedColor;
+    }
+
+    public VictorSPX getCPMoter(){
+        return cpMotor;
+    }
+
+    public DoubleSolenoid getCPSolenoid(){
+        return cpSolenoid;
+    }
+
+    public int getSpeed(){
+        return speed;
+    }
+
+    public void setSpeed(int speed){
+        this.speed = speed;
+    }
+
+    public Value getSolenoidState(){
+        return solenoidState;
+    }
+
+    public List<Color> getColors(){
+        return _colors;
     }
 }
