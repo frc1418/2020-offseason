@@ -29,5 +29,7 @@ public final class Constants {
     // Intake devices
     public static final int UPPER_INTAKE_MOTOR = 6;
     public static final int BOTTOM_INTAKE_MOTOR = 7;
+    public static final int INTAKE_SWITCH = 8;
+    public static final int DOUBLE_SOLENOID = 9;
 }
 
