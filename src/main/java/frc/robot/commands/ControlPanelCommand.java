@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import com.revrobotics.ColorMatchResult;
-import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -30,6 +29,6 @@ public class ControlPanelCommand extends CommandBase {
                 ColorMatchResult resultColor = controlPanel.getColorMatcher().matchClosestColor(readColor);
                 controlPanel.setDetectedColor(resultColor.color);
         }
-        controlPanel.getCPMoter().set(VictorSPXControlMode.Velocity, (double)controlPanel.getSpeed());
+        // controlPanel.getCPMoter().set(VictorSPXControlMode.Velocity, (double)controlPanel.getSpeed());
     }
 }

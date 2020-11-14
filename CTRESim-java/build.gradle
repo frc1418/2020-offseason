@@ -21,8 +21,8 @@ test {
     useJUnitPlatform()
 }
 
-//name = 'SparkMaxSim-java'
-group = System.getenv("GROUP") ?: 'com.revrobotics'
+// name = 'CTRESim-java'
+group = System.getenv("GROUP") ?: 'com.ctre.phoenix'
 version = System.getenv("VERSION") ?: "local-SNAPSHOT"
 
 java {
@@ -33,6 +33,7 @@ java {
 }
 
 jar {
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
     manifest {
         attributes(
             'Implementation-Title': project.name,
