@@ -26,4 +26,7 @@ pluginManagement {
     }
 }
 
-include ':SparkMaxSim-java'
+rootProject.name = '2020-offseason'
+
+include 'SparkMaxSim-java'
+include 'CTRESim-java'

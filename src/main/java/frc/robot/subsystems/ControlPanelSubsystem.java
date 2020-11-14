@@ -9,7 +9,7 @@ import java.util.LinkedHashSet;
 import com.revrobotics.ColorSensorV3;
 import com.revrobotics.ColorMatch;
 
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+// import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.util.Color;
 
 public class ControlPanelSubsystem extends SubsystemBase {
 
-    private VictorSPX cpMotor;
+    // private VictorSPX cpMotor;
     private DoubleSolenoid cpSolenoid;
     private ColorSensorV3 colorSensor;
     private DriverStation ds;
@@ -41,7 +41,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
     private Value solenoidState = Value.kReverse;
 
     public ControlPanelSubsystem(){
-        cpMotor = new VictorSPX(2);
+        // cpMotor = new VictorSPX(2);
         cpSolenoid = new DoubleSolenoid(5, 4);
         colorSensor = new ColorSensorV3(Port.kOnboard);
         ds = DriverStation.getInstance();
@@ -112,9 +112,9 @@ public class ControlPanelSubsystem extends SubsystemBase {
         this.detectedColor = detectedColor;
     }
 
-    public VictorSPX getCPMoter(){
-        return cpMotor;
-    }
+    // public VictorSPX getCPMoter(){
+        // return cpMotor;
+    // }
 
     public DoubleSolenoid getCPSolenoid(){
         return cpSolenoid;

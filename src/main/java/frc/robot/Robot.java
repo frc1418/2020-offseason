@@ -105,7 +105,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        Logger.getLogger("Robot").info("Color: " + ColorSensor.BART(DriverStation.getInstance().getGameSpecificMessage()));
+        // Logger.getLogger("Robot").info("Color: " + ColorSensor.BART(DriverStation.getInstance().getGameSpecificMessage()));
     }
 
     @Override

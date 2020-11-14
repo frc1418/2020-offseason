@@ -42,31 +42,30 @@ deploy {
 // Set this to true to enable desktop support.
 def includeDesktopSupport = true
 
-// Vendor dependencies to ignore when in sim
-// Dependency names found in their respective Json file under the key "name"
-String[] ignoreDeps = ["REVRobotics"]
-
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 dependencies {
-    def shouldIgnoreDeps = Os.isFamily(Os.FAMILY_MAC) && (
-        gradle.startParameter.taskNames.toString() =~ /simulate\w+/
-    ) 
+    // Vendor dependencies to ignore when in sim
+    // Dependency names found in their respective Json file under the key "name"
+    String[] ignoredDeps = ["REVRobotics", "CTRE-Phoenix"]
+    def shouldIgnoreDeps = project.hasProperty('ignore-deps') || (
+        Os.isFamily(Os.FAMILY_MAC) && (gradle.startParameter.taskNames.toString() =~ /simulate\w+/)
+    )
 
     if (shouldIgnoreDeps) {
         implementation project(':SparkMaxSim-java')
+        implementation project(':CTRESim-java')
     } else {
-        ignoreDeps = [] as String[]
+        ignoredDeps = [] as String[]
     }
 
     implementation wpi.deps.wpilib()
     nativeZip wpi.deps.wpilibJni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.wpilibJni(wpi.platforms.desktop)
 
-
-    implementation wpi.deps.vendor.java(ignoreDeps)
-    nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio, ignoreDeps)
-    nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop, ignoreDeps)
+    implementation wpi.deps.vendor.java(ignoredDeps)
+    nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio, ignoredDeps)
+    nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop, ignoredDeps)
 
     testImplementation 'junit:junit:4.12'
 
