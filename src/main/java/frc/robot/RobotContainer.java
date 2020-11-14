@@ -69,7 +69,7 @@ public class RobotContainer {
 
         driveSubsystem.setDefaultCommand(new RunCommand(() -> driveSubsystem.drive(speed, rotation), driveSubsystem));
         shooterSubsystem.setDefaultCommand(new RunCommand(() -> shooterSubsystem.shooter(throttle), shooterSubsystem));
-        succButton.whenHeld(new RunCommand(() -> intakeSubsystem.spin(-1.0)));
+        // succButton.whenHeld(new RunCommand(() -> intakeSubsystem.spin(-1.0)));
     }
 
     /**
