@@ -56,20 +56,28 @@ public class RobotContainer {
      * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
+
+        // Joysticks
+        Joystick leftJoystick = new Joystick(0);
+        Joystick rightJoystick = new Joystick(1);
         Joystick altJoystick = new Joystick(2);
-
-        JoystickButton autoButton = new JoystickButton(altJoystick, 5);
-
-        JoystickButton triggerButton = new JoystickButton(altJoystick, 1);
         
-        
-        double speed = altJoystick.getY();
-        double rotation = altJoystick.getX();
-        double throttle = altJoystick.getThrottle();
+        JoystickButton launcherSolenoid = new JoystickButton(altJoystick, 1);
+        JoystickButton btnIntakeIn = new JoystickButton(altJoystick, 3);
+        JoystickButton btnIntakeOut = new JoystickButton(altJoystick, 4);
+        JoystickButton btnLauncherMotor = new JoystickButton(altJoystick, 12);
+        JoystickButton btnLauncherIdle = new JoystickButton(altJoystick, 10);
+        JoystickButton btnLauncherMotorClose = new JoystickButton(altJoystick, 11);
+        JoystickButton btnLauncherMotorDynamic = new JoystickButton(altJoystick, 9);
+        JoystickButton btnSlowMovement = new JoystickButton(rightJoystick, 1);
+        JoystickButton btnIntakeSolenoid = new JoystickButton(altJoystick, 2);
+        JoystickButton btnRotationSensitivity = new JoystickButton(rightJoystick, 1);
+        JoystickButton btnIntakeBottomOut = new JoystickButton(altJoystick, 6);
 
-        driveSubsystem.setDefaultCommand(new RunCommand(() -> driveSubsystem.drive(speed, rotation), driveSubsystem));
-        shooterSubsystem.setDefaultCommand(new RunCommand(() -> shooterSubsystem.shooter(throttle), shooterSubsystem));
-        succButton.whenHeld(new RunCommand(() -> intakeSubsystem.spin(-1.0)));
+        driveSubsystem.setDefaultCommand(new RunCommand(() -> driveSubsystem.drive(altJoystick.getY(), altJoystick.getX()), driveSubsystem));
+        
+        shooterSubsystem.setDefaultCommand(new RunCommand(() -> shooterSubsystem.shooter(altJoystick.getThrottle()), shooterSubsystem));
+        btnIntakeIn.whileHeld(new RunCommand(() -> intakeSubsystem.spin(-1.0)));
     }
 
     /**
