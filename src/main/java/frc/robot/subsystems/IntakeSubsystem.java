@@ -24,18 +24,14 @@ public class IntakeSubsystem extends SubsystemBase {
         intakeSwitchButton.whenActive(new InstantCommand(() -> ballsCollected++));
     }
 
-    public void spin(double spinSpeed) {
-        bottomIntakeMotor.set(VictorSPXControlMode.PercentOutput, spinSpeed);
-    }
-
     // Solenoid methods
 
     public void extend() {
         intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
-    public void retract() {
-        intakeSolenoid.set(DoubleSolenoid.Value.kForward);
+    public void spin(double speed) {
+        bottomIntakeMotor.set(VictorSPXControlMode.PercentOutput, speed);
     }
 
 
