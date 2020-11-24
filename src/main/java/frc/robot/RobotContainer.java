@@ -75,15 +75,21 @@ public class RobotContainer {
         JoystickButton btnIntakeBottomOut = new JoystickButton(altJoystick, 6);
 
         driveSubsystem.setDefaultCommand(new RunCommand(() -> driveSubsystem.drive(-leftJoystick.getY() * 0.7, rightJoystick.getX() * 0.7), driveSubsystem));
-        launcherSolenoid
-            .whenPressed(new InstantCommand(() -> shooterSubsystem.activatePiston(), shooterSubsystem))
-            .whenInactive(new InstantCommand(() -> shooterSubsystem.lowerPiston(), shooterSubsystem));
         shooterSubsystem.setDefaultCommand(new RunCommand(() -> {
             shooterSubsystem.shooter(Math.abs(altJoystick.getY()));
             System.out.println("Spinning");
         }, shooterSubsystem));
-        btnIntakeOut.whenHeld(new InstantCommand(() -> intakeSubsystem.spin(0.5), intakeSubsystem)).whenInactive(new InstantCommand(() -> intakeSubsystem.spin(0), intakeSubsystem), true);
-        btnIntakeIn.whileHeld(new InstantCommand(() -> intakeSubsystem.spin(-0.5), intakeSubsystem)).whenInactive(new InstantCommand(() -> intakeSubsystem.spin(0), intakeSubsystem), true);
+
+        launcherSolenoid
+            .whenPressed(new InstantCommand(() -> shooterSubsystem.activatePiston(), shooterSubsystem))
+            .whenInactive(new InstantCommand(() -> shooterSubsystem.lowerPiston(), shooterSubsystem));
+
+        btnIntakeOut
+            .whenHeld(new InstantCommand(() -> intakeSubsystem.spin(0.5), intakeSubsystem))
+            .whenInactive(new InstantCommand(() -> intakeSubsystem.spin(0), intakeSubsystem), true);
+        btnIntakeIn
+            .whenHeld(new InstantCommand(() -> intakeSubsystem.spin(-0.5), intakeSubsystem))
+            .whenInactive(new InstantCommand(() -> intakeSubsystem.spin(0), intakeSubsystem), true);
     }
 
     /**
@@ -93,7 +99,7 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        ParallelRaceGroup charge = new ChargeAutoCommand(driveSubsystem, 0.2).withTimeout(1);
+        Command charge = new ChargeAutoCommand(driveSubsystem, 0.2).withTimeout(1);
         return charge;
     }
 }
