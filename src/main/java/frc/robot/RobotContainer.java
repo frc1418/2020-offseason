@@ -62,15 +62,23 @@ public class RobotContainer {
         Joystick rightJoystick = new Joystick(1);
         Joystick altJoystick = new Joystick(2);
         
-        JoystickButton launcherSolenoid = new JoystickButton(altJoystick, 1);
+        JoystickButton btnLauncherSolenoid = new JoystickButton(altJoystick, 1);
+        JoystickButton btnAlign = new JoystickButton(leftJoystick, 1);
         JoystickButton btnIntakeIn = new JoystickButton(altJoystick, 3);
         JoystickButton btnIntakeOut = new JoystickButton(altJoystick, 4);
+        JoystickButton btnCPExtend = new JoystickButton(leftJoystick, 4); // toggle: use "toggleWhenPressed" method to set command
+        JoystickButton btnWinch = new JoystickButton(altJoystick, 8);
+        JoystickButton btnCPMotor = new JoystickButton(leftJoystick, 3);
         JoystickButton btnLauncherMotor = new JoystickButton(altJoystick, 12);
-        JoystickButton btnLauncherIdle = new JoystickButton(altJoystick, 10);
+        JoystickButton btnLauncherIdle = new JoystickButton(altJoystick, 10); // toggle: use "toggleWhenPressed" method to set command
         JoystickButton btnLauncherMotorClose = new JoystickButton(altJoystick, 11);
         JoystickButton btnLauncherMotorDynamic = new JoystickButton(altJoystick, 9);
         JoystickButton btnSlowMovement = new JoystickButton(rightJoystick, 1);
-        JoystickButton btnIntakeSolenoid = new JoystickButton(altJoystick, 2);
+        JoystickButton btnIntakeSolenoid = new JoystickButton(altJoystick, 2); // toggle: use "toggleWhenPressed" method to set command
+        JoystickButton btnScissorExtend = new JoystickButton(altJoystick, 7);
+        JoystickButton btnColorSensor = new JoystickButton(leftJoystick, 5);
+        JoystickButton btnCPStop = new JoystickButton(leftJoystick, 2);
+        JoystickButton btnInvertYAxis = new JoystickButton(leftJoystick, 6);
         JoystickButton btnRotationSensitivity = new JoystickButton(rightJoystick, 1);
         JoystickButton btnIntakeBottomOut = new JoystickButton(altJoystick, 6);
 
@@ -80,13 +88,13 @@ public class RobotContainer {
             System.out.println("Spinning");
         }, shooterSubsystem));
 
-        launcherSolenoid
+        btnLauncherSolenoid
             .whenPressed(new InstantCommand(() -> shooterSubsystem.activatePiston(), shooterSubsystem))
             .whenInactive(new InstantCommand(() -> shooterSubsystem.lowerPiston(), shooterSubsystem));
 
         driveSubsystem.setDefaultCommand(new RunCommand(() -> driveSubsystem.drive(speed, rotation), driveSubsystem));
         shooterSubsystem.setDefaultCommand(new RunCommand(() -> shooterSubsystem.shooter(throttle), shooterSubsystem));
-        succButton.whenHeld(new RunCommand(() -> intakeSubsystem.spin(-1.0)));
+        btnIntakeIn.whenHeld(new RunCommand(() -> intakeSubsystem.spin(-1.0)));
     }
 
     /**
