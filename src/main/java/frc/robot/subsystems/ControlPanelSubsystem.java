@@ -37,14 +37,14 @@ public class ControlPanelSubsystem extends SubsystemBase {
         }
     }
 
-    public Color getColor() {
-        return colorSensor.getRawColor();
+    public ControlPanelColor getControlPanelColor() {
+        return ControlPanelColor.getColorFromMatch(colorSensor.getMatchedColor());
     }
 
-    public Color getTurnToColor() {
+    public ControlPanelColor getTurnToColor() {
         if (turnToColor == null) return null;
 
-        return turnToColor.getRawColor();
+        return turnToColor;
     }
 
     @Override

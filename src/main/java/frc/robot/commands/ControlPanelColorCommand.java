@@ -2,13 +2,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.common.ControlPanelColorSensor.ControlPanelColor;
 import frc.robot.subsystems.ControlPanelSubsystem;
 
 public class ControlPanelColorCommand extends CommandBase {
     private ControlPanelSubsystem controlPanel;
-    private Color turnToColor;
+    private ControlPanelColor turnToColor;
 
-    public ControlPanelColorCommand(Color turnToColor) {
+    public ControlPanelColorCommand(ControlPanelColor turnToColor) {
         // TODO: Why won't this line do what we want? Let's think about it
         controlPanel = new ControlPanelSubsystem();
         this.turnToColor = turnToColor;
@@ -28,12 +29,13 @@ public class ControlPanelColorCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return controlPanel.getColor().equals(turnToColor);
+        // TODO: Implement equals for ControlPanelColor and use it here
+        return controlPanel.getControlPanelColor().getColor().equals(turnToColor.getColor());
     }
 
     @Override
     public void execute() {
-        double direction = Math.signum(5d);
+        double direction = Math.signum(turnToColor.ordinal() - controlPanel.getControlPanelColor().ordinal());
         controlPanel.spin(0.5 * direction);
     }
 }

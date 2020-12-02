@@ -14,14 +14,14 @@ public class ControlPanelColorSensor {
         BLUE(new Color(0.175, 0.469, 0.356)),
         YELLOW(new Color(0.188, 0.503, 0.310));
 
-        private Color rawColor;
+        private Color color;
 
-        private ControlPanelColor(Color rawColor) {
-            this.rawColor = rawColor;
+        private ControlPanelColor(Color color) {
+            this.color = color;
         }
 
-        public Color getRawColor() {
-            return rawColor;
+        public Color getColor() {
+            return color;
         }
 
         public static ControlPanelColor getColorFromCode(String colorKey) {
@@ -38,6 +38,16 @@ public class ControlPanelColorSensor {
             return null;
         }
 
+        public static ControlPanelColor getColorFromMatch(Color color) {
+            for (ControlPanelColor cpColor : ControlPanelColor.values()) {
+                if (cpColor.getColor().equals(color)) {
+                    return cpColor;
+                }
+            }
+
+            return null;
+        }
+
         public ControlPanelColor getTurnToColor() {
             int totalColors = ControlPanelColor.values().length;
             return ControlPanelColor.values()[(this.ordinal() + 2) % totalColors]; 
@@ -51,7 +61,7 @@ public class ControlPanelColorSensor {
         colorSensor = new ColorSensorV3(port);
 
         for (ControlPanelColor color : ControlPanelColor.values()) {
-            colorMatcher.addColorMatch(color.getRawColor());
+            colorMatcher.addColorMatch(color.getColor());
         }
     }
 
