@@ -1,35 +1,31 @@
 package frc.robot.subsystems;
 
-// import java.util.HashMap;
+import static frc.robot.Constants.CONTROL_PANEL_MOTOR;
+
 import java.util.List;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
+import java.util.logging.Logger;
 
-import com.revrobotics.ColorSensorV3;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.ColorMatch;
-
-// import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.common.ControlPanelColorSensor;
+import frc.robot.common.ControlPanelColorSensor.ControlPanelColor;
 
 public class ControlPanelSubsystem extends SubsystemBase {
 
-    // private VictorSPX cpMotor;
-    private DoubleSolenoid cpSolenoid;
-    private ColorSensorV3 colorSensor;
-    private DriverStation ds;
-    private ColorMatch colorMatcher;
-
-    private Color turnToColor = null;
-    private Color detectedColor = null;
-    private Color fmsColor = null;
-    private Color lastColor = null;
+    private Logger logger = Logger.getLogger("ControlPanelSubsystem");
+    private DoubleSolenoid cpSolenoid = new DoubleSolenoid(5, 4);
+    private WPI_VictorSPX cpMotor = new WPI_VictorSPX(CONTROL_PANEL_MOTOR);
+    private ControlPanelColorSensor colorSensor = new ControlPanelColorSensor(Port.kOnboard);;
+    private DriverStation ds = DriverStation.getInstance();
+    private ControlPanelColor turnToColor;
 
     private List<String> colorNames;
     private List<Color> _colors;
@@ -37,16 +33,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
 
     //private LinkedHashMap<String, Color> colors;
 
-    private int speed = 0;
-    private Value solenoidState = Value.kReverse;
-
-    public ControlPanelSubsystem(){
-        // cpMotor = new VictorSPX(2);
-        cpSolenoid = new DoubleSolenoid(5, 4);
-        colorSensor = new ColorSensorV3(Port.kOnboard);
-        ds = DriverStation.getInstance();
-        colorMatcher = new ColorMatch();
-
+    public ControlPanelSubsystem() {
         // colors = new LinkedHashMap<String, Color>();
         // colors.put("B", new Color(0.175, 0.469, 0.356));
         // colors.put("G", new Color(0.188, 0.503, 0.310));
@@ -63,76 +50,44 @@ public class ControlPanelSubsystem extends SubsystemBase {
         _colors.add(new Color(0.325, 0.453, 0.221));
         _colors.add(new Color(0.269, 0.550, 0.181));
 
-        for(Color color : _colors){
-            colorMatcher.addColorMatch(color);
-        }
-        colorMatcher.addColorMatch(Color.kBlack);
     }
 
-    public void spin(int speed){
-        this.speed = speed;
+    public void spin(double speed) {
+        cpMotor.set(ControlMode.PercentOutput, speed);
     }
 
-    public void setSolenoid(boolean extend){
-        if (extend){
-            solenoidState = Value.kForward;
-        }
-            
-        else{
-            solenoidState = Value.kReverse;
+    public void setSolenoid(boolean extend) {
+        if (extend) {
+            cpSolenoid.set(Value.kForward);
+        } else{
+            cpSolenoid.set(Value.kReverse);
         }
     }
 
-    public Color getFMSColor(){
-        int fmsColorIndex =  _colors.indexOf(ds.getGameSpecificMessage());
-        fmsColor = _colors.get(fmsColorIndex);
-
-        turnToColor = _colors.get((fmsColorIndex + 2) % _colors.size());
-
-        return fmsColor;
+    public Color getColor() {
+        return colorSensor.getRawColor();
     }
 
-    public DriverStation getDS() {
-        return ds;
+    public Color getTurnToColor() {
+        return turnToColor.getRawColor();
     }
 
-    public ColorSensorV3 getColorSensor() {
-        return colorSensor;
+    @Override
+    public void periodic() {
+        if (ds.getGameSpecificMessage().length() != 1) return;
+
+        ControlPanelColor color = ControlPanelColor.getColorFromCode(ds.getGameSpecificMessage());
+
+        if (color == null) {
+            logger.warning(
+                "Game data for control panel color was not R, G, B, or Y. Actual: " + ds.getGameSpecificMessage()
+            );
+            return;
+        }
+
+        if (turnToColor == null) {
+            turnToColor = color.getTurnToColor();
+        }
     }
 
-    public ColorMatch getColorMatcher() {
-        return colorMatcher;
-    }
-
-    public Color getDetectedColor(){
-        return detectedColor;
-    }
-
-    public void setDetectedColor(Color detectedColor) {
-        this.detectedColor = detectedColor;
-    }
-
-    // public VictorSPX getCPMoter(){
-        // return cpMotor;
-    // }
-
-    public DoubleSolenoid getCPSolenoid(){
-        return cpSolenoid;
-    }
-
-    public int getSpeed(){
-        return speed;
-    }
-
-    public void setSpeed(int speed){
-        this.speed = speed;
-    }
-
-    public Value getSolenoidState(){
-        return solenoidState;
-    }
-
-    public List<Color> getColors(){
-        return _colors;
-    }
 }

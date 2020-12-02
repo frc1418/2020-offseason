@@ -32,5 +32,8 @@ public final class Constants {
     public static final int INTAKE_SWITCH = 2;
     public static final int INTAKE_SOLENOID_FWD = 2;
     public static final int INTAKE_SOLENOID_REV = 1;
+
+    // Control panel devices
+    public static final int CONTROL_PANEL_MOTOR = 15;
 }
 

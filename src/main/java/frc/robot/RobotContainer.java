@@ -9,22 +9,18 @@ package frc.robot;
 
 import java.util.logging.Logger;
 
-import com.revrobotics.ColorSensorV3;
-
-import edu.wpi.first.networktables.LogMessage;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.common.ColorSensor;
+import frc.robot.commands.ChargeAutoCommand;
 import frc.robot.common.Limelight;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.commands.ChargeAutoCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
