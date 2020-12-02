@@ -69,6 +69,8 @@ public class ControlPanelSubsystem extends SubsystemBase {
     }
 
     public Color getTurnToColor() {
+        if (turnToColor == null) return null;
+
         return turnToColor.getRawColor();
     }
 
