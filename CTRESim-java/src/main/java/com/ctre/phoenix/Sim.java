@@ -1,3 +1,5 @@
+package com.ctre.phoenix;
+
 import edu.wpi.first.wpilibj.RobotBase;
 
 public class Sim {
