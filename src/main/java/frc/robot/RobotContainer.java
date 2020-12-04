@@ -80,7 +80,7 @@ public class RobotContainer {
 
         driveSubsystem.setDefaultCommand(new RunCommand(() -> driveSubsystem.drive(-leftJoystick.getY() * 0.7, rightJoystick.getX() * 0.7), driveSubsystem));
         shooterSubsystem.setDefaultCommand(new RunCommand(() -> {
-            shooterSubsystem.shooter(Math.abs(altJoystick.getY()));
+            shooterSubsystem.shoot(Math.abs(altJoystick.getY()));
             System.out.println("Spinning");
         }, shooterSubsystem));
 

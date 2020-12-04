@@ -1,6 +1,6 @@
 package frc.robot.subsystems;
 
-import static frc.robot.Constants.CONTROL_PANEL_MOTOR;
+import static frc.robot.Constants.*;
 
 import java.util.logging.Logger;
 
@@ -19,9 +19,9 @@ import frc.robot.common.ControlPanelColorSensor.ControlPanelColor;
 public class ControlPanelSubsystem extends SubsystemBase {
 
     private Logger logger = Logger.getLogger("ControlPanelSubsystem");
-    private DoubleSolenoid cpSolenoid = new DoubleSolenoid(5, 4);
+    private DoubleSolenoid cpSolenoid = new DoubleSolenoid(CONTROL_PANEL_SOLENOID_FWD, CONTROL_PANEL_SOLENOID_REV);
     private WPI_VictorSPX cpMotor = new WPI_VictorSPX(CONTROL_PANEL_MOTOR);
-    private ControlPanelColorSensor colorSensor = new ControlPanelColorSensor(Port.kOnboard);;
+    private ControlPanelColorSensor colorSensor = new ControlPanelColorSensor(Port.kOnboard);
     private DriverStation ds = DriverStation.getInstance();
     private ControlPanelColor turnToColor;
 
@@ -42,27 +42,15 @@ public class ControlPanelSubsystem extends SubsystemBase {
     }
 
     public ControlPanelColor getTurnToColor() {
-        if (turnToColor == null) return null;
-
         return turnToColor;
     }
 
     @Override
     public void periodic() {
-        if (ds.getGameSpecificMessage().length() != 1) return;
+        if (ds.getGameSpecificMessage().isEmpty()) return;
 
-        ControlPanelColor color = ControlPanelColor.getColorFromCode(ds.getGameSpecificMessage());
-
-        if (color == null) {
-            logger.warning(
-                "Game data for control panel color was not R, G, B, or Y. Actual: " + ds.getGameSpecificMessage()
-            );
-            return;
-        }
-
-        if (turnToColor == null) {
-            turnToColor = color.getTurnToColor();
-        }
+        // TODO: Once getColorFromCode throws an IllegalArgumentException, we should try catch it here
+        turnToColor = ControlPanelColor.getColorFromCode(ds.getGameSpecificMessage()).getTurnToColor();
     }
 
 }
