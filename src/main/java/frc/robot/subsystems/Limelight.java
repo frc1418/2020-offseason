@@ -79,7 +79,7 @@ public class Limelight extends SubsystemBase {
         this.lightMode.setNumber(lightMode);
     }
     
-    public boolean getValidTarget() {
+    public boolean hasValidTarget() {
         return validTarget.getNumber(0).intValue() == 1;
     }
 
@@ -107,7 +107,7 @@ public class Limelight extends SubsystemBase {
      * @return The plane distance (along horizonntal plane) to the target or -1 if no target is found.
      */
     public double getPlaneDistance() {
-        if (!getValidTarget()) {
+        if (!hasValidTarget()) {
             return -1;
         }
         
@@ -118,7 +118,7 @@ public class Limelight extends SubsystemBase {
      * @return The distance to the target or -1 if no target is found.
      */
     public double getDistance() {
-        if(!getValidTarget()){
+        if(!hasValidTarget()){
             return -1;
         }
         
@@ -130,7 +130,7 @@ public class Limelight extends SubsystemBase {
             throw new IllegalArgumentException("The limelight must be set to the right pipeline to get run getPose()");
         }
 
-        if (!getValidTarget()) {
+        if (!hasValidTarget()) {
             return null;
         }
 
