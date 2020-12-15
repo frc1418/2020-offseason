@@ -23,7 +23,7 @@ public class ControlPanelSubsystem extends SubsystemBase {
     private WPI_VictorSPX cpMotor = new WPI_VictorSPX(CONTROL_PANEL_MOTOR);
     private ControlPanelColorSensor colorSensor = new ControlPanelColorSensor(Port.kOnboard);
     private DriverStation ds = DriverStation.getInstance();
-    private ControlPanelColor turnToColor;
+    private ControlPanelColor turnToColor = ControlPanelColor.UNSET;
 
     public void spin(double speed) {
         cpMotor.set(ControlMode.PercentOutput, speed);

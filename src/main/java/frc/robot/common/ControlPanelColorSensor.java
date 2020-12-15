@@ -12,7 +12,8 @@ public class ControlPanelColorSensor {
         RED(new Color(0.325, 0.453, 0.221)),
         GREEN(new Color(0.269, 0.550, 0.181)),
         BLUE(new Color(0.175, 0.469, 0.356)),
-        YELLOW(new Color(0.188, 0.503, 0.310));
+        YELLOW(new Color(0.188, 0.503, 0.310)),
+        UNSET(null);
 
         private Color color;
 
