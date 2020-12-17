@@ -3,6 +3,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2020.3.2"
+    id "com.diffplug.spotless" version "5.8.2"
 }
 
 sourceCompatibility = JavaVersion.VERSION_11
@@ -51,7 +52,7 @@ dependencies {
     // Dependency names found in their respective Json file under the key "name"
     String[] ignoredDeps = ["REVRobotics", "CTRE-Phoenix"]
     def shouldIgnoreDeps = project.hasProperty('ignore-deps') || (
-        Os.isFamily(Os.FAMILY_MAC) && (gradle.startParameter.taskNames.toString() =~ /simulate\w+/)
+            Os.isFamily(Os.FAMILY_MAC) && (gradle.startParameter.taskNames.toString() =~ /simulate\w+/)
     )
 
     if (shouldIgnoreDeps) {
@@ -69,7 +70,10 @@ dependencies {
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio, ignoredDeps)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop, ignoredDeps)
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation platform('org.junit:junit-bom:5.7.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'org.mockito:mockito-core:+'
+    testImplementation 'org.mockito:mockito-junit-jupiter:+'
 
     // Enable simulation gui support. Must check the box in vscode to enable support
     // upon debugging
@@ -96,5 +100,20 @@ gradle.taskGraph.whenReady { graph ->
                 task.enabled = false
             }
         }
+    }
+}
+
+test {
+    useJUnitPlatform()
+}
+
+spotless {
+    java {
+        googleJavaFormat()
+        indentWithTabs(2)
+        indentWithSpaces(4)
+        replaceRegex 'class-level javadoc indentation fix', /^\*/, ' *'
+        replaceRegex 'method-level javadoc indentation fix', /    \*/, '     *'
+
     }
 }
