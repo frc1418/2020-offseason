@@ -4,9 +4,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 
 public class ChargeAutoCommand extends CommandBase {
-    private DriveSubsystem driveSubsystem;
-    private double speed;
-    
+
+    private final DriveSubsystem driveSubsystem;
+    private final double speed;
+
     public ChargeAutoCommand(DriveSubsystem drive, double speed) {
         driveSubsystem = drive;
         this.speed = speed;

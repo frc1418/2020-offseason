@@ -4,36 +4,35 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ControlPanelSubsystem;
 
 public class ControlPanelColorCommand extends CommandBase {
-  private ControlPanelSubsystem controlPanel;
-  private float direction;
 
-    public ControlPanelColorCommand() {
-        // TODO: Why won't this line do what we want? Let's think about it
-        controlPanel = new ControlPanelSubsystem();
+    private final ControlPanelSubsystem cpSubsystem;
+    private float direction;
+
+    public ControlPanelColorCommand(ControlPanelSubsystem controlPanelSubsystem) {
+        this.cpSubsystem = controlPanelSubsystem;
     }
 
-  @Override
-  public void initialize() {
-    controlPanel.setSolenoid(true);
-    direction = Math.signum(controlPanel.getTurnToColor()
-        .ordinal() - controlPanel.getDetectedColor()
-        .ordinal());
-  }
+    @Override
+    public void initialize() {
+        cpSubsystem.setSolenoid(true);
+        direction = Math.signum(cpSubsystem.getTurnToColor()
+            .ordinal() - cpSubsystem.getDetectedColor()
+            .ordinal());
+    }
 
-  @Override
-  public void end(boolean interrupted) {
-    controlPanel.setSolenoid(false);
-    controlPanel.spin(0);
-  }
+    @Override
+    public void end(boolean interrupted) {
+        cpSubsystem.setSolenoid(false);
+        cpSubsystem.spin(0);
+    }
 
-  @Override
-  public boolean isFinished() {
-    return controlPanel.getDetectedColor()
-        .equals(controlPanel.getTurnToColor());
-  }
+    @Override
+    public boolean isFinished() {
+        return cpSubsystem.isAtTarget();
+    }
 
-  @Override
-  public void execute() {
-    controlPanel.spin(0.5 * direction);
-  }
+    @Override
+    public void execute() {
+        cpSubsystem.spin(0.5 * direction);
+    }
 }

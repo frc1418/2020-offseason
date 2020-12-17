@@ -18,10 +18,10 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
+
     private Command m_autonomousCommand;
 
     private RobotContainer m_robotContainer;
-
 
     /**
      * This function is run when the robot is first started up and should be used for any
@@ -38,8 +38,8 @@ public class Robot extends TimedRobot {
      * This function is called every robot packet, no matter the mode. Use this for items like
      * diagnostics that you want ran during disabled, autonomous, teleoperated and test.
      *
-     * <p>This runs after the mode specific periodic functions, but before
-     * LiveWindow and SmartDashboard integrated updating.
+     * <p>This runs after the mode specific periodic functions, but before LiveWindow and
+     * SmartDashboard integrated updating.
      */
     @Override
     public void robotPeriodic() {
@@ -47,7 +47,8 @@ public class Robot extends TimedRobot {
         // commands, running already-scheduled commands, removing finished or interrupted commands,
         // and running subsystem periodic() methods.    This must be called from the robot's periodic
         // block in order for anything in the Command-based framework to work.
-        CommandScheduler.getInstance().run();
+        CommandScheduler.getInstance()
+            .run();
     }
 
     /**
@@ -55,7 +56,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void disabledInit() {
-
     }
 
     @Override
@@ -80,7 +80,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
-    
     }
 
     @Override
@@ -99,13 +98,15 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        // Logger.getLogger("Robot").info("Color: " + ColorSensor.BART(DriverStation.getInstance().getGameSpecificMessage()));
+        // Logger.getLogger("Robot").info("Color: " +
+        // ColorSensor.BART(DriverStation.getInstance().getGameSpecificMessage()));
     }
 
     @Override
     public void testInit() {
         // Cancels all running commands at the start of test mode.
-        CommandScheduler.getInstance().cancelAll();
+        CommandScheduler.getInstance()
+            .cancelAll();
     }
 
     /**
