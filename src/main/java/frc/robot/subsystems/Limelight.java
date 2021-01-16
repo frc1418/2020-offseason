@@ -33,7 +33,7 @@ public class Limelight extends SubsystemBase {
     public Limelight() {
         yaw.setDefaultDouble(0);
         pitch.setDefaultDouble(0);
-        ledMode.setDefaultNumber(0);
+        lightMode.setDefaultNumber(0);
         validTarget.setDefaultNumber(0);
         skew.setDefaultDouble(0);
         cameraMode.setDefaultNumber(0);
@@ -64,7 +64,7 @@ public class Limelight extends SubsystemBase {
     }
 
     public void setLEDMode(LEDMode ledMode) {
-        this.ledMode.setNumber(ledMode.intValue());
+        this.lightMode.setNumber(ledMode.intValue());
     }
 
     public boolean hasValidTarget() {
